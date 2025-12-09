@@ -23,24 +23,22 @@ cp env.example .env
 
 ### 3. Setup Dataset
 
-**Important:** The EnigmaEval dataset is private and not included in this repository. 
+The EnigmaEval dataset is private and not included in this repository. 
 
 ```bash
 # Copy the dataset pickle file to the data/ directory
 cp /path/to/enigmaeval.pkl data/enigmaeval.pkl
 ```
 
-The pickle file should contain the EnigmaEval test set exported from the `cais/enigmaeval` HuggingFace dataset.
-
 ### 4. Run Evaluation
 
 ```bash
 python enigmaeval_eval.py \
-  --model gpt-4o \
+  --model gpt-5-mini \
   --split all \
-  --output_file results/enigmaeval_gpt4o.json \
+  --output_dir results/enigmaeval/ \
   --models_config configs/models.yaml \
-  --max_concurrent 4
+  --max_concurrent 1
 ```
 
 ## 📊 Usage
@@ -49,45 +47,16 @@ python enigmaeval_eval.py \
 
 ```bash
 python enigmaeval_eval.py \
-  --model MODEL_NAME \              # Model alias from configs/models.yaml
+  --model MODEL_NAME \               # Model alias from configs/models.yaml
   --split SPLIT_NAME \               # Dataset split (see below)
   --output_file OUTPUT_PATH \        # Path for results JSON
   --models_config CONFIG_PATH \      # Path to models config (default: configs/models.yaml)
   --max_concurrent N \               # Max concurrent requests (default: 4)
-  --text_only \                      # Skip puzzles with images (optional)
-  --exclude_meta                     # Exclude meta puzzles (optional)
 ```
-
-### Available Splits
-
-- `all`: All puzzle sources
-- `normal`: PuzzledPint, Cryptic Crossword, Puzzle Potluck, CRUMS, CS50x
-- `hard`: MIT Mystery Hunt, Labor Day Extravaganza, GMPuzzles
-- `pdf`: CRUMS, Cryptic Crossword, PuzzledPint, Labor Day Extravaganza, CS50x, GMPuzzles
-- `html`: MIT Mystery Hunt, Puzzle Potluck
-- Individual sources: `pp`, `lde`, `mit`, `crums`, `cc`, `potluck`, `cs50`, `gm`
 
 ### Model Configuration
 
-Models are configured in `configs/models.yaml`. Example:
-
-```yaml
-gpt-4o:
-  model: openai/gpt-4o
-  generation_config:
-    max_tokens: 16000
-
-claude-sonnet-4:
-  model: anthropic/claude-sonnet-4
-  generation_config:
-    max_tokens: 8000
-    
-deepseek-v3.2:
-  model: openai/deepseek-reasoner
-  generation_config:
-    api_key_env: DEEPSEEK_API_KEY
-    api_base_url: https://api.deepseek.com
-```
+Models are configured in `configs/models.yaml`.
 
 ## 📁 Repository Structure
 
@@ -111,22 +80,19 @@ engimaeval-eval/
 ├── requirements.txt             # Python dependencies
 └── README.md                    # This file
 ```
-
-## 🔒 Privacy Note
-
-The EnigmaEval dataset (`cais/enigmaeval`) is **private** and requires special access. The dataset is NOT included in this repository and must be obtained separately and copied to `data/enigmaeval.pkl`.
-
-
 ## 🙏 Citation
 
 If you use EnigmaEval in your research, please cite:
 
 ```bibtex
-@article{enigmaeval2024,
-  title={EnigmaEval: A Benchmark for Puzzle-Solving Intelligence},
-  author={...},
-  journal={...},
-  year={2024}
+@misc{wang2025enigmaevalbenchmarklongmultimodal,
+      title={EnigmaEval: A Benchmark of Long Multimodal Reasoning Challenges}, 
+      author={Clinton J. Wang and Dean Lee and Cristina Menghini and Johannes Mols and Jack Doughty and Adam Khoja and Jayson Lynch and Sean Hendryx and Summer Yue and Dan Hendrycks},
+      year={2025},
+      eprint={2502.08859},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2502.08859}, 
 }
 ```
 

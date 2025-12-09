@@ -18,7 +18,7 @@ from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
 from shared.llm_agents import get_llm_agent_class
-from .enigmaeval_utils import (
+from enigmaeval_utils import (
     AnnotatedPuzzle, 
     SPLITS, 
     SOURCES, 
