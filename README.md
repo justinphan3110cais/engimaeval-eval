@@ -38,7 +38,7 @@ python enigmaeval_eval.py \
   --split all \
   --output_dir results/enigmaeval/ \
   --models_config configs/models.yaml \
-  --max_concurrent 1
+  --max_concurrent 128
 ```
 
 ## 📊 Usage
