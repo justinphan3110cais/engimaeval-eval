@@ -9,7 +9,8 @@ import pickle
 from pathlib import Path
 from pydantic import BaseModel
 import datasets
-
+import random
+random.seed(42)
 
 # =================== SCHEMA ===================
 
@@ -92,9 +93,6 @@ def fetch_puzzles(args):
     with open(dataset_path, 'rb') as f:
         hf_dataset = pickle.load(f)
     
-    # Shuffle with seed for reproducibility (now it's a list, not a Dataset)
-    import random
-    random.seed(42)
     random.shuffle(hf_dataset)
     
     # Filter by puzzle sources
