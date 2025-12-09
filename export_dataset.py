@@ -42,10 +42,18 @@ def export_enigmaeval_dataset(output_path: str = "data/enigmaeval.pkl"):
         dataset = load_dataset("cais/enigmaeval", split="test")
         print(f"✓ Successfully loaded {len(dataset)} samples")
         
+        # Convert to list of dicts (this ensures all data including images are serialized)
+        print(f"\n🔄 Converting dataset to serializable format...")
+        dataset_list = []
+        for i, item in enumerate(dataset):
+            if (i + 1) % 100 == 0:
+                print(f"   Processed {i + 1}/{len(dataset)} samples...")
+            dataset_list.append(dict(item))
+        
         # Export to pickle
         print(f"\n💾 Exporting to {output_path}...")
         with open(output_file, 'wb') as f:
-            pickle.dump(dataset, f)
+            pickle.dump(dataset_list, f)
         
         # Get file size
         file_size = output_file.stat().st_size / (1024 * 1024)  # MB
@@ -58,6 +66,12 @@ def export_enigmaeval_dataset(output_path: str = "data/enigmaeval.pkl"):
         with open(output_file, 'rb') as f:
             loaded_data = pickle.load(f)
         print(f"✓ Verification successful! Loaded {len(loaded_data)} samples")
+        
+        # Check first sample has images
+        if loaded_data[0].get('images'):
+            print(f"   First sample has {len(loaded_data[0]['images'])} image(s)")
+        else:
+            print(f"   Warning: First sample has no images")
         
         print("\n" + "="*60)
         print("✅ Export completed successfully!")

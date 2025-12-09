@@ -92,9 +92,13 @@ def fetch_puzzles(args):
     with open(dataset_path, 'rb') as f:
         hf_dataset = pickle.load(f)
     
-    # Shuffle with seed for reproducibility
-    hf_dataset = hf_dataset.shuffle(seed=42)
-    hf_dataset = hf_dataset.filter(lambda example: example["category"] in puzzle_sources)
+    # Shuffle with seed for reproducibility (now it's a list, not a Dataset)
+    import random
+    random.seed(42)
+    random.shuffle(hf_dataset)
+    
+    # Filter by puzzle sources
+    hf_dataset = [example for example in hf_dataset if example["category"] in puzzle_sources]
 
     puzzles = []
     for row in hf_dataset:
