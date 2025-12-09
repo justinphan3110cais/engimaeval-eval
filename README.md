@@ -41,19 +41,6 @@ python enigmaeval_eval.py \
   --max_concurrent 128
 ```
 
-## 📊 Usage
-
-### Command Line Arguments
-
-```bash
-python enigmaeval_eval.py \
-  --model MODEL_NAME \               # Model alias from configs/models.yaml
-  --split SPLIT_NAME \               # Dataset split (see below)
-  --output_file OUTPUT_PATH \        # Path for results JSON
-  --models_config CONFIG_PATH \      # Path to models config (default: configs/models.yaml)
-  --max_concurrent N \               # Max concurrent requests (default: 4)
-```
-
 ### Model Configuration
 
 Models are configured in `configs/models.yaml`.
