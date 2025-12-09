@@ -21,21 +21,16 @@ cp env.example .env
 # Edit .env and add your API keys
 ```
 
-### 3. Export Dataset
+### 3. Setup Dataset
 
-**Important:** The EnigmaEval dataset is private and not included in this repository. You must export it locally:
+**Important:** The EnigmaEval dataset is private and not included in this repository. 
 
 ```bash
-# Make sure HF_TOKEN is set in your .env file
-python export_dataset.py
+# Copy the dataset pickle file to the data/ directory
+cp /path/to/enigmaeval.pkl data/enigmaeval.pkl
 ```
 
-This will:
-- Download the dataset from HuggingFace (requires access to `cais/enigmaeval`)
-- Save it as `data/enigmaeval.pkl` (this file is gitignored)
-- The pickle file is ~XX MB and contains all test samples
-
-**Note:** You need to have access to the private `cais/enigmaeval` dataset on HuggingFace.
+The pickle file should contain the EnigmaEval test set exported from the `cais/enigmaeval` HuggingFace dataset.
 
 ### 4. Run Evaluation
 
@@ -100,7 +95,6 @@ deepseek-v3.2:
 engimaeval-eval/
 ├── enigmaeval_eval.py           # Main evaluation script
 ├── enigmaeval_utils.py          # Utility functions and data loading
-├── export_dataset.py            # Dataset export script
 ├── configs/
 │   └── models.yaml              # Model configurations
 ├── shared/
@@ -112,7 +106,7 @@ engimaeval-eval/
 │   ├── mit_tips.txt
 │   └── plagiarism.txt
 ├── data/                        # Dataset storage (gitignored)
-│   └── enigmaeval.pkl           # Exported dataset (not in repo)
+│   └── enigmaeval.pkl           # Dataset file (not in repo - must be copied)
 ├── results/                     # Evaluation results (gitignored)
 ├── requirements.txt             # Python dependencies
 └── README.md                    # This file
@@ -120,16 +114,8 @@ engimaeval-eval/
 
 ## 🔒 Privacy Note
 
-The EnigmaEval dataset (`cais/enigmaeval`) is **private** and requires special access. The dataset is NOT included in this repository and must be exported locally using `export_dataset.py`.
+The EnigmaEval dataset (`cais/enigmaeval`) is **private** and requires special access. The dataset is NOT included in this repository and must be obtained separately and copied to `data/enigmaeval.pkl`.
 
-**Files that are gitignored:**
-- `data/*.pkl` - Dataset files
-- `results/` - Evaluation results
-- `.env` - Environment variables with API keys
-
-## 📝 License
-
-See LICENSE file for details.
 
 ## 🙏 Citation
 
@@ -146,5 +132,4 @@ If you use EnigmaEval in your research, please cite:
 
 ## 🔗 Related
 
-- Main simple-evals repository: [simple-evals](https://github.com/centerforaisafety/simple-evals-private)
-- HuggingFace dataset: `cais/enigmaeval` (private)
+- Main CAIS simple-evals repository: [simple-evals](https://github.com/centerforaisafety/simple-evals)
