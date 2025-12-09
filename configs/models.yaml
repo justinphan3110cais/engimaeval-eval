@@ -39,16 +39,8 @@ gemini-2.5-pro:
   generation_config:
     reasoning_effort: high
 
-gemini-2.5-flash:
-  model: gemini/gemini-2.5-flash
-
-qwen3-max-thinking:
-  model: openai/qwen3-max-preview
-  generation_config:
-    api_key_env: DASHSCOPE_API_KEY
-    api_base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
-    extra_body:
-      enable_thinking: true
+gemini-2.5-flash-lite:
+  model: gemini/gemini-2.5-flash-lite
 
 deepseek-v3.2:
   model: openai/deepseek-reasoner

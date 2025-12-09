@@ -87,8 +87,6 @@ def fetch_puzzles(args):
     if not Path(dataset_path).exists():
         raise FileNotFoundError(
             f"Dataset file not found: {dataset_path}\n"
-            f"Please run: python export_dataset.py\n"
-            f"This will download the dataset from HuggingFace and save it locally."
         )
     
     with open(dataset_path, 'rb') as f:

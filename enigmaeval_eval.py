@@ -353,19 +353,6 @@ async def main():
             print(f"  {source:<25}: {source_accuracy:.3f} ({stats['correct']:>3}/{stats['total']:<3})")
         print("=" * 80)
     
-    # Print token usage
-    print("\n" + "=" * 80)
-    print("TOKEN USAGE")
-    print("=" * 80)
-    print(f"  Total input tokens:  {llm_agent.all_token_usage.input_tokens:,}")
-    print(f"  Total output tokens: {llm_agent.all_token_usage.output_tokens:,}")
-    print(f"  Total tokens:        {llm_agent.all_token_usage.total_tokens:,}")
-    print(f"  Cached tokens:       {llm_agent.all_token_usage.cached_tokens:,}")
-    print(f"  Max input tokens:    {llm_agent.max_token_usage.input_tokens:,}")
-    print(f"  Max output tokens:   {llm_agent.max_token_usage.output_tokens:,}")
-    print(f"  Max total tokens:    {llm_agent.max_token_usage.total_tokens:,}")
-    print("=" * 80)
-    
     logger.info(f"Results saved to: {save_path}")
     
     print("\n" + "=" * 80)
