@@ -6,10 +6,14 @@ Contains all necessary functions, types, and constants.
 import os
 import re
 import pickle
+import base64
+import io
 from pathlib import Path
 from pydantic import BaseModel
 import datasets
 import random
+from PIL import Image
+
 random.seed(42)
 
 # =================== SCHEMA ===================
@@ -62,7 +66,52 @@ SPLITS = {
 }
 
 
-# =================== DATA LOADING ===================
+# =================== IMAGE UTILITIES ===================
+
+def split_images(img_data: str) -> list[str]:
+    """
+    Split underscore-separated image data into a list of individual images.
+    """
+    if not img_data or not isinstance(img_data, str) or not img_data.strip():
+        return []
+    
+    # Check if it contains multiple images (underscore separator)
+    if '_data:image/' in img_data:
+        parts = img_data.split('_data:image/')
+        images = []
+        for i, part in enumerate(parts):
+            if i == 0:
+                if part.startswith('data:image/'):
+                    images.append(part)
+            else:
+                images.append('data:image/' + part)
+        return images
+    else:
+        if img_data.startswith('data:image/'):
+            return [img_data]
+        else:
+            return []
+
+
+def convert_gif_to_png(img_data: str) -> str:
+    """
+    Convert GIF image to PNG format for API compatibility.
+    """
+    try:
+        _, b64_part = img_data.split(',', 1)
+        gif_bytes = base64.b64decode(b64_part)
+        
+        # Standard PIL conversion
+        gif_image = Image.open(io.BytesIO(gif_bytes))
+        
+        # Save as PNG
+        png_buffer = io.BytesIO()
+        gif_image.save(png_buffer, format='PNG')
+        png_b64 = base64.b64encode(png_buffer.getvalue()).decode('ascii')
+        
+        return f"data:image/png;base64,{png_b64}"
+    except Exception:
+        return img_data
 
 
 # =================== DATA UTILITIES ===================
@@ -108,14 +157,20 @@ def fetch_puzzles(args):
         if args.exclude_meta and "meta" in category.lower():
             continue
 
-        # Handle images - the dataset has images as base64 strings (already cleaned)
+        # Handle images - split underscore-separated images and convert GIFs
         imgs = []
         if row["images"] is not None and str(row["images"]).strip():
             if args.text_only:
                 continue  # Skip puzzles with images if text_only is requested
             
-            # Images are already properly cleaned in the dataset
-            imgs = [row["images"]]  # Single image as clean base64 string
+            # Split underscore-separated images
+            raw_images = split_images(row["images"])
+            
+            # Convert GIFs to PNG for API compatibility
+            for img in raw_images:
+                if img.startswith('data:image/gif'):
+                    img = convert_gif_to_png(img)
+                imgs.append(img)
 
         puzzles.append(
             AnnotatedPuzzle(
